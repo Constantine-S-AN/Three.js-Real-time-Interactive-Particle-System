@@ -634,7 +634,9 @@
         document.getElementById('lang-select').addEventListener('change', (e) => {
             applyLanguage(e.target.value);
         });
+        // Apply language and enforce sphere as default selection on load
         applyLanguage(currentLanguage);
+        setShape('sphere', document.querySelector("[data-shape='sphere']"));
 
     </script>
 </body>
