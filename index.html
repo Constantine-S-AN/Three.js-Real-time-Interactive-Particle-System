@@ -105,12 +105,12 @@
             <div class="mb-4">
                 <label id="shape-label" class="text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2 block">模型选择</label>
                 <div class="grid grid-cols-3 gap-2">
-                    <button data-shape="heart" onclick="setShape('heart', this)" class="shape-btn active p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">❤️ 爱心</button>
+                    <button data-shape="heart" onclick="setShape('heart', this)" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">❤️ 爱心</button>
                     <button data-shape="flower" onclick="setShape('flower', this)" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🌸 花朵</button>
                     <button data-shape="saturn" onclick="setShape('saturn', this)" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🪐 土星</button>
                     <button data-shape="buddha" onclick="setShape('buddha', this)" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🧘 禅像</button>
                     <button data-shape="fireworks" onclick="setShape('fireworks', this)" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🎆 烟花</button>
-                    <button data-shape="sphere" onclick="setShape('sphere', this)" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🔮 球体</button>
+                    <button data-shape="sphere" onclick="setShape('sphere', this)" class="shape-btn active p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🔮 球体</button>
                 </div>
             </div>
 
@@ -230,7 +230,7 @@
         let handExpansionFactor = 0; // 0 = 闭合/原始形状, 1 = 完全张开/爆炸
         let targetExpansion = 0; // 用于平滑过渡
         let isHandDetected = false;
-        let currentShape = 'heart';
+        let currentShape = 'sphere';
         let currentLanguage = 'zh';
 
         // --- 2. 形状生成数学逻辑 ---
