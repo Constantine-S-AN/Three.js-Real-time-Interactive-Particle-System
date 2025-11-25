@@ -80,8 +80,8 @@
     <!-- Loading Screen -->
     <div id="loading-screen">
         <span class="loader mb-4"></span>
-        <h2 class="text-xl font-light tracking-widest text-gray-300">初始化视觉系统...</h2>
-        <p class="text-xs text-gray-500 mt-2">首次加载可能需要几秒钟</p>
+        <h2 id="loading-title" class="text-xl font-light tracking-widest text-gray-300">初始化视觉系统...</h2>
+        <p id="loading-note" class="text-xs text-gray-500 mt-2">首次加载可能需要几秒钟</p>
     </div>
 
     <!-- Webcam Video (Hidden from main view, shown in mini view) -->
@@ -96,25 +96,33 @@
         
         <!-- Controls Panel -->
         <div class="glass-panel rounded-2xl p-5 pointer-events-auto shadow-2xl transition-all hover:bg-opacity-80">
-            <h1 class="text-2xl font-bold mb-1 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">粒子幻境</h1>
-            <p class="text-xs text-gray-400 mb-4">通过手势张合控制粒子</p>
+            <div class="flex items-start justify-between gap-2 mb-1">
+                <div>
+                    <h1 id="title-text" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">粒子幻境</h1>
+                    <p id="subtitle-text" class="text-xs text-gray-400">通过手势张合控制粒子</p>
+                </div>
+                <select id="lang-select" class="bg-gray-900 border border-gray-700 text-xs rounded px-2 py-1 cursor-pointer">
+                    <option value="zh">中文</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
 
             <!-- Shape Selection -->
             <div class="mb-4">
-                <label class="text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2 block">模型选择</label>
+                <label id="shape-label" class="text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2 block">模型选择</label>
                 <div class="grid grid-cols-3 gap-2">
-                    <button onclick="setShape('heart')" class="shape-btn active p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">❤️ 爱心</button>
-                    <button onclick="setShape('flower')" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🌸 花朵</button>
-                    <button onclick="setShape('saturn')" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🪐 土星</button>
-                    <button onclick="setShape('buddha')" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🧘 禅像</button>
-                    <button onclick="setShape('fireworks')" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🎆 烟花</button>
-                    <button onclick="setShape('sphere')" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🔮 球体</button>
+                    <button data-shape="heart" onclick="setShape('heart', this)" class="shape-btn active p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">❤️ 爱心</button>
+                    <button data-shape="flower" onclick="setShape('flower', this)" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🌸 花朵</button>
+                    <button data-shape="saturn" onclick="setShape('saturn', this)" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🪐 土星</button>
+                    <button data-shape="buddha" onclick="setShape('buddha', this)" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🧘 禅像</button>
+                    <button data-shape="fireworks" onclick="setShape('fireworks', this)" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🎆 烟花</button>
+                    <button data-shape="sphere" onclick="setShape('sphere', this)" class="shape-btn p-2 text-xs rounded border border-gray-700 bg-gray-800 hover:bg-gray-700 transition">🔮 球体</button>
                 </div>
             </div>
 
             <!-- Color Picker -->
             <div class="mb-4 flex items-center justify-between">
-                <label class="text-xs font-semibold text-gray-300 uppercase tracking-wider">粒子颜色</label>
+                <label id="color-label" class="text-xs font-semibold text-gray-300 uppercase tracking-wider">粒子颜色</label>
                 <div class="flex items-center gap-2">
                     <input type="color" id="color-picker" value="#4f46e5" class="w-8 h-8 rounded cursor-pointer border-0 bg-transparent p-0">
                     <span id="color-val" class="text-xs text-gray-400 font-mono">#4F46E5</span>
@@ -124,7 +132,7 @@
             <!-- Status Indicator -->
             <div class="border-t border-gray-700 pt-3 mt-2">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-400">手势状态:</span>
+                    <span id="gesture-label" class="text-xs text-gray-400">手势状态:</span>
                     <span id="gesture-status" class="text-xs font-bold text-yellow-400">等待检测...</span>
                 </div>
                 <div class="w-full bg-gray-700 h-1.5 rounded-full mt-2 overflow-hidden">
@@ -138,7 +146,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 4l-5-5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
             </svg>
-            <span class="text-sm font-medium">全屏模式</span>
+            <span id="fullscreen-label" class="text-sm font-medium">全屏模式</span>
         </button>
     </div>
 
@@ -147,6 +155,58 @@
         const PARTICLE_COUNT = 18000;
         const PARTICLE_SIZE = 0.15;
         const INITIAL_COLOR = 0x4f46e5;
+        const i18n = {
+            zh: {
+                title: '粒子幻境',
+                subtitle: '通过手势张合控制粒子',
+                shapeLabel: '模型选择',
+                colorLabel: '粒子颜色',
+                gestureLabel: '手势状态:',
+                fullscreen: '全屏模式',
+                loadingTitle: '初始化视觉系统...',
+                loadingNote: '首次加载可能需要几秒钟',
+                shapes: {
+                    heart: '❤️ 爱心',
+                    flower: '🌸 花朵',
+                    saturn: '🪐 土星',
+                    buddha: '🧘 禅像',
+                    fireworks: '🎆 烟花',
+                    sphere: '🔮 球体'
+                },
+                status: {
+                    waiting: '等待检测...',
+                    pinch: '捏合 (收缩)',
+                    open: '张开 (扩散)',
+                    controlling: '控制中...',
+                    none: '未检测到手势'
+                }
+            },
+            en: {
+                title: 'Particle Mirage',
+                subtitle: 'Control particles by pinching and opening your hand',
+                shapeLabel: 'Shape Selection',
+                colorLabel: 'Particle Color',
+                gestureLabel: 'Gesture Status:',
+                fullscreen: 'Fullscreen',
+                loadingTitle: 'Initializing vision system...',
+                loadingNote: 'First load may take a few seconds',
+                shapes: {
+                    heart: '❤️ Heart',
+                    flower: '🌸 Flower',
+                    saturn: '🪐 Saturn',
+                    buddha: '🧘 Zen',
+                    fireworks: '🎆 Fireworks',
+                    sphere: '🔮 Sphere'
+                },
+                status: {
+                    waiting: 'Waiting...',
+                    pinch: 'Pinch (Contract)',
+                    open: 'Open (Expand)',
+                    controlling: 'In control...',
+                    none: 'No hand detected'
+                }
+            }
+        };
         
         let scene, camera, renderer, particles, geometry, material;
         let targetPositions = []; // 目标形状的坐标数组
@@ -159,6 +219,7 @@
         let targetExpansion = 0; // 用于平滑过渡
         let isHandDetected = false;
         let currentShape = 'heart';
+        let currentLanguage = 'zh';
 
         // --- 2. 形状生成数学逻辑 ---
         
@@ -445,20 +506,20 @@
 
                 // UI 更新
                 if (normalized < 0.2) {
-                    statusEl.innerText = "捏合 (收缩)";
+                    statusEl.innerText = i18n[currentLanguage].status.pinch;
                     statusEl.className = "text-xs font-bold text-blue-400";
                 } else if (normalized > 0.7) {
-                    statusEl.innerText = "张开 (扩散)";
+                    statusEl.innerText = i18n[currentLanguage].status.open;
                     statusEl.className = "text-xs font-bold text-red-400";
                 } else {
-                    statusEl.innerText = "控制中...";
+                    statusEl.innerText = i18n[currentLanguage].status.controlling;
                     statusEl.className = "text-xs font-bold text-yellow-400";
                 }
                 meterEl.style.width = `${normalized * 100}%`;
 
             } else {
                 isHandDetected = false;
-                statusEl.innerText = "未检测到手势";
+                statusEl.innerText = i18n[currentLanguage].status.none;
                 statusEl.className = "text-xs font-bold text-gray-500";
                 // 如果没有手，自动恢复平缓呼吸状态（设为0或0.2）
                 handExpansionFactor = 0.1; 
@@ -490,13 +551,13 @@
 
         // --- 6. UI 交互逻辑 ---
 
-        function setShape(shape) {
+        function setShape(shape, btn) {
             currentShape = shape;
             targetPositions = generateTargetPositions(shape);
             
             // 更新按钮样式
-            document.querySelectorAll('.shape-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            document.querySelectorAll('.shape-btn').forEach(el => el.classList.remove('active'));
+            if (btn) btn.classList.add('active');
         }
 
         document.getElementById('color-picker').addEventListener('input', (e) => {
@@ -530,6 +591,24 @@
             }
         }
 
+        function applyLanguage(lang) {
+            currentLanguage = lang;
+            const copy = i18n[lang];
+            document.getElementById('title-text').innerText = copy.title;
+            document.getElementById('subtitle-text').innerText = copy.subtitle;
+            document.getElementById('shape-label').innerText = copy.shapeLabel;
+            document.getElementById('color-label').innerText = copy.colorLabel;
+            document.getElementById('gesture-label').innerText = copy.gestureLabel;
+            document.getElementById('fullscreen-label').innerText = copy.fullscreen;
+            document.getElementById('loading-title').innerText = copy.loadingTitle;
+            document.getElementById('loading-note').innerText = copy.loadingNote;
+            document.getElementById('gesture-status').innerText = copy.status.waiting;
+            document.querySelectorAll('.shape-btn').forEach(btn => {
+                const key = btn.getAttribute('data-shape');
+                btn.innerText = copy.shapes[key];
+            });
+        }
+
         // --- 启动 ---
         initThree();
         cameraUtils.start();
@@ -537,6 +616,12 @@
         // 调整小窗口画布大小
         canvasElement.width = 320;
         canvasElement.height = 240;
+
+        // 语言切换
+        document.getElementById('lang-select').addEventListener('change', (e) => {
+            applyLanguage(e.target.value);
+        });
+        applyLanguage(currentLanguage);
 
     </script>
 </body>
