@@ -1,5 +1,7 @@
 # Three.js Real-time Interactive Particle System
 
+[Live Demo](https://constantine-s-an.github.io/Three.js-Real-time-Interactive-Particle-System/)
+
 Gesture-driven particle sculpture built with Three.js (r128), MediaPipe Hands, and Tailwind via CDNs. The page renders ~18k GPU-accelerated particles that morph into multiple shapes and react to your pinch (thumb–index) distance in real time through the webcam feed.
 
 ## Features
